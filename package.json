@@ -4,6 +4,7 @@
   "description": "Winston formatter for logging to DataDog",
   "main": "index.js",
   "scripts": {
+    "vistest": "nyc mocha",
     "test": "nyc mocha test --reporter mocha-junit-reporter --reporter-options mochaFile=./test_results/results.xml",
     "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
   },

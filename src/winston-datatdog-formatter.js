@@ -9,10 +9,6 @@
 
 const { format } = require('winston');
 
-const defaults = {};
-defaults.now = () => new Date();
-
-let _deps = {};
 let _additionalProperties;
 
 const getAlertType = (level) => {
@@ -25,7 +21,7 @@ const getAlertType = (level) => {
 
 const formatBasicMessage = (msg) => {
   return {
-    timestamp: _deps.now().toISOString(),
+    timestamp: new Date().toISOString(),
     level: getAlertType(msg.level),
     message: msg.message,
   };
@@ -78,13 +74,10 @@ const datadogFormat = format((msg) => {
 
 /**
  * datadogFormatter constructor
- * @param {object} [deps] - dependencies
- * @param {function} [deps.now] - For testing only, returns current time.
  * @param {array} [additionalProperties] - Tags to apply to each logging message
  */
-module.exports = (deps, additionalProperties) => {
+module.exports = (additionalProperties) => {
   _additionalProperties = parseAdditionalProperties(additionalProperties);
-  _deps = Object.assign(defaults, deps);
   return {
     format: datadogFormat,
   };
