@@ -76,4 +76,25 @@ describe("winston-datadog-formatter", () => {
             
     })
 
+    describe("formatting DataDog messages", () => {
+
+        var revert
+
+        before(() => {
+            revert = formatter.__set__({
+                _additionalProperties: {foo: "bar", hello: "world"},
+                getTimeStamp: () => "123"
+            })
+        })
+
+        after(() => {
+            revert()
+        })
+
+        it("Formats the message correctly", () => {
+            var datadogMsg = formatter.__get__("datadogMsgFromWinstonMsg")({level: "warn", message: "foo bar"})
+            datadogMsg.should.deep.equal('{"timestamp":"123","level":"warning","message":"foo bar","foo":"bar","hello":"world"}\n')
+        })
+    })
+
 })

@@ -11,6 +11,8 @@ const { format } = require('winston');
 
 let _additionalProperties;
 
+const getTimeStamp = () => { return new Date().toISOString() }
+
 const getAlertType = (level) => {
   switch (level) {
     case 'error': return 'error';
@@ -21,7 +23,7 @@ const getAlertType = (level) => {
 
 const formatBasicMessage = (msg) => {
   return {
-    timestamp: new Date().toISOString(),
+    timestamp: getTimeStamp(),
     level: getAlertType(msg.level),
     message: msg.message,
   };
@@ -55,12 +57,7 @@ const parseAdditionalProperties = (additionalProperties) => {
   return properties;
 };
 
-/**
- * Transforms a Winston message into a Log message
- * @param {String} - Winston logging message
- * @returns {string} - JSON string containing log message
- */
-const datadogFormat = format((msg) => {
+const datadogMsgFromWinstonMsg = (msg) => {
   const fmtMsg = Object.assign({},
     formatBasicMessage(msg),
     formatAdditionalAttributes(msg, _additionalProperties));
@@ -70,6 +67,15 @@ const datadogFormat = format((msg) => {
   // [MessageDelimiter] for example.
 
   return `${JSON.stringify(fmtMsg)}\n`;
+}
+
+/**
+ * Transforms a Winston message into a Log message
+ * @param {String} - Winston logging message
+ * @returns {string} - JSON string containing log message
+ */
+const datadogFormat = format((msg) => {
+  datadogMsgFromWinstonMsg(msg)
 });
 
 /**
