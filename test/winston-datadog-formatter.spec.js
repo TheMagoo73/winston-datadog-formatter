@@ -98,7 +98,7 @@ describe("winston-datadog-formatter", () => {
 
         it("Add a stack trace and id if required", () => {
             var datadogMsg = formatter.__get__("datadogMsgFromWinstonMsg")({id: "abc", level: "warn", message: "foo bar", stack: "a stack"})
-            datadogMsg.should.deep.equal('{"timestamp":"123","level":"warning","message":"foo bar","stackTrace":"a stack","errorId":"abc",foo":"bar","hello":"world"}\n')
+            datadogMsg.should.deep.equal('{"timestamp":"123","level":"warning","message":"foo bar","stackTrace":"a stack","errorId":"abc","foo":"bar","hello":"world"}\n')
         })
     })
 
