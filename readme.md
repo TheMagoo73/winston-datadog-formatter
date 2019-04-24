@@ -13,3 +13,19 @@ npm install --save winston-datadog-udp-transport
 
 The following example configures the Winston logger to use the DataDog formatter, and UDP transport to ship logs to DataDog via a local installation of the DataDog agent with UDP enabled. For more information on using UDP log shipping with the DataDog agent see [winston-datadog-udp-transport](https://github.com/TheMagoo73/winston-datadog-udp-transport)
 
+```javascript
+const winston = require('winston');
+const DatadogTransport = require('datadog-transport');
+const datadogFormatter = require('datadog-formatter');
+
+const logger = winston.createLogger({
+    level: 'verbose',
+    transports: [
+        // Use the default transport configuration for a local
+        // install of the DD agent
+        new DatadogTransport({ 
+            format: datadogFormatter.format(),
+        })
+    ]
+});
+```
